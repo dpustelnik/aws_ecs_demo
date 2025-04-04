@@ -10,6 +10,6 @@ terraform {
 
 provider "aws" {
   # Specify the AWS region to deploy resources
-  region = "eu-west-1"
+  region  = "eu-west-1"
   profile = "${terraform.workspace}.lab"
 }

@@ -31,30 +31,30 @@ resource "aws_ecs_task_definition" "this" {
   family                   = "demo-app-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = 256
-  memory                   = 512
+  cpu                      = var.container_cpu
+  memory                   = var.container_memory
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([
     {
-      name       = "demo-app-container"
-      image      = var.container_image
-      cpu    = var.container_cpu
-      memory = var.container_memory
-      essential  = true
+      name      = "demo-app-container"
+      image     = var.container_image
+      cpu       = var.container_cpu
+      memory    = var.container_memory
+      essential = true
       portMappings = [
         {
           containerPort = var.container_port
         }
       ]
-    #   # Convert the map of environment variables into the ECS env array
-    #   environment = [
-    #     for k, v in var.container_environment : {
-    #       name  = k
-    #       value = v
-    #     }
-    #   ]
+      #   # Convert the map of environment variables into the ECS env array
+      #   environment = [
+      #     for k, v in var.container_environment : {
+      #       name  = k
+      #       value = v
+      #     }
+      #   ]
     }
   ])
 }
@@ -76,7 +76,7 @@ resource "aws_ecs_service" "this" {
   load_balancer {
     target_group_arn = aws_lb_target_group.this.arn
     container_name   = "demo-app-container"
-    container_port   = 8080
+    container_port   = var.container_port
   }
 
   depends_on = [

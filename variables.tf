@@ -1,11 +1,23 @@
 variable "region" {
-  type = string
+  type    = string
   default = "eu-west-1"
 }
 
 variable "acm_certificate_arn" {
   type        = string
   description = "ACM certificate ARN used by ALB for HTTPS"
+}
+
+variable "alb_ingress_whitelist" {
+  type        = list(string)
+  description = "Allow inbound HTTPS from allowed network CIDR"
+  default     = ["75.2.60.0/24"]
+}
+
+variable "alb_egress_whitelist" {
+  type        = list(string)
+  description = "Allow inbound HTTPS from allowed network CIDR"
+  default     = ["0.0.0.0/24"]
 }
 
 variable "vpc_cidr" {
@@ -30,6 +42,7 @@ variable "db_password" {
   type        = string
   default     = "YourSuperSecretPassword123"
   description = "Password for the PostgreSQL database"
+  sensitive   = true
 }
 
 ###################################
@@ -37,14 +50,14 @@ variable "db_password" {
 ###################################
 
 variable "container_port" {
-  default = 8080
+  default     = 8080
   description = "What port number the application inside the docker container is binding to"
 }
 
 variable "container_image" {
-  type = string
-  default = "nginx:latest"
-  description = "Docker image used by the ECS container" 
+  type        = string
+  default     = "nginx:latest"
+  description = "Docker image used by the ECS container"
 }
 
 variable "container_cpu" {
@@ -54,6 +67,11 @@ variable "container_cpu" {
 variable "container_memory" {
   description = "How much memory in megabytes to give the container"
   default     = 512
+}
+
+variable "container_name" {
+  default     = "demo-app-container"
+  description = "What is container definition name"
 }
 
 # variable "container_environment" {

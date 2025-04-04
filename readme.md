@@ -1,6 +1,6 @@
 ## improvements to do:
  - define s3 bucket for statefile
- - use kms for manage certificates
+ - use ACM for manage certificates
  - use existing terraform.workspace as env identificator to deploy on varius types of enviroments 
  - use private subnets for ECS and RDS
  - store secrets in parameter store

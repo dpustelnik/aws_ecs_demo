@@ -1,7 +1,7 @@
 # SG for the ALB: allow inbound HTTPS (443) only from 75.2.60.0/24
 resource "aws_security_group" "alb_sg" {
   name        = "demo-alb-sg"
-  description = "Allow inbound HTTPS from 75.2.60.0/24"
+  description = "Allow inbound HTTPS from allowed network CIDR"
   vpc_id      = aws_vpc.this.id
 
   ingress {
@@ -9,7 +9,7 @@ resource "aws_security_group" "alb_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["75.2.60.0/24"]
+    cidr_blocks = var.alb_ingress_whitelist
   }
 
   egress {
@@ -17,7 +17,7 @@ resource "aws_security_group" "alb_sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.alb_egress_whitelist
   }
 
   tags = {
